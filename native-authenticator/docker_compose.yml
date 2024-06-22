@@ -17,6 +17,7 @@ services:
       - "./jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py:ro"
       # Bind Docker socket on the host so we can connect to the daemon from
       # within the container
+      - "./data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
       - "../entrypoint.sh:/entry/entrypoint.sh:rw"
       - "../project_config.yaml:/project_config.yaml"
@@ -28,7 +29,7 @@ services:
       # All containers will join this network
       DOCKER_NETWORK_NAME: jupyterhub-network
       # JupyterHub will spawn this Notebook image for users
-      DOCKER_NOTEBOOK_IMAGE: docker.io/library/collaborativelearningextensionjupyter:latest 
+      DOCKER_NOTEBOOK_IMAGE: ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:main
       # Notebook directory inside user image
       DOCKER_NOTEBOOK_DIR: /home/jovyan/work
 
