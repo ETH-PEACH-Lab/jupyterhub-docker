@@ -2,3 +2,6 @@ projects:
   learning-ext:
     members:
       - pascallinder
+  instructors:
+    members:
+      - pascallinder
