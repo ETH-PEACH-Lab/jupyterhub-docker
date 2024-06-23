@@ -4,12 +4,12 @@ services:
   hub:
     build:
       context: .
-      dockerfile: ../Dockerfile.jupyterhub
+      dockerfile: Dockerfile.jupyterhub
       args:
         JUPYTERHUB_VERSION: latest
     restart: always
-    image: jupyterhub
-    container_name: jupyterhub
+    image: jupyterhub-native
+    container_name: jupyterhub-native
     networks:
       - jupyterhub-network
     volumes:

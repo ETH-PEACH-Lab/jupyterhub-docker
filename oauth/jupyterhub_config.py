@@ -4,42 +4,35 @@
 # Configuration file for JupyterHub
 import os
 import yaml
-import pprint
-import warnings
+import sys
 
 with open('/project_config.yaml', 'r') as file:
     project_config = yaml.safe_load(file)
 from oauthenticator.github import LocalGitHubOAuthenticator
 
 c = get_config()  # noqa: F821
-class GitHubEnvAuthenticator(LocalGitHubOAuthenticator):
-    async def pre_spawn_start(self, user, spawner):
-        auth_state = await user.get_auth_state()
-        pprint.pprint(auth_state)
+c.JupyterHub.authenticator_class = LocalGitHubOAuthenticator
+c.LocalGitHubOAuthenticator.create_system_users = True
+c.JupyterHub.admin_users = admin = set()
+c.LocalGitHubOAuthenticator.open_signup = True
+c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
 
-        if not auth_state:
-            # user has no auth state
-            return
+join = os.path.join
 
-        # define some environment variables from auth_state
-        spawner.environment['GITHUB_TOKEN'] = auth_state['access_token']
-        spawner.environment['GITHUB_USER'] = auth_state['github_user']['login']
-        spawner.environment['GITHUB_EMAIL'] = auth_state['github_user']['email']
-        
-if 'JUPYTERHUB_CRYPT_KEY' not in os.environ:
-    warnings.warn(
-        "Need JUPYTERHUB_CRYPT_KEY env for persistent auth_state.\n"
-        "    export JUPYTERHUB_CRYPT_KEY=$(openssl rand -hex 32)"
-    )
-    c.CryptKeeper.keys = [os.urandom(32)]
+here = os.path.dirname(__file__)
+root = os.environ.get('OAUTHENTICATOR_DIR', here)
+sys.path.insert(0, root)
 
-c.GitHubOAuthenticator.oauth_callback_url = os.environ['JHUB_OAUTH_CALLBACK_URL']
-c.GitHubOAuthenticator.client_id = os.environ['JHUB_OAUTH_CLIENT_ID']
-c.GitHubOAuthenticator.client_secret = os.environ['JHUB_OAUTH_CLIENT_SECRET']
+with open(join(root, 'admins')) as f:
+    for line in f:
+        if not line:
+            continue
+        parts = line.split()
+        admin.add(parts[0])
+            
 # We rely on environment variables to configure JupyterHub so that we
 # avoid having to rebuild the JupyterHub container every time we change a
 # configuration parameter.
-
 # Spawn single-user servers as Docker containers
 c.JupyterHub.spawner_class = "dockerspawner.DockerSpawner"
 c.NotebookApp.server_extensions = [
@@ -78,7 +71,7 @@ c.DockerSpawner.remove = True
 c.DockerSpawner.debug = True
 
 # User containers will access hub by container name on the Docker network
-c.JupyterHub.hub_ip = "jupyterhub"
+c.JupyterHub.hub_ip = "0.0.0.0"
 c.JupyterHub.hub_port = 8080
 
 # Persist hub data on volume mounted inside container
@@ -118,7 +111,3 @@ for project_name, project in project_config["projects"].items():
             "groups": [project_name],
         }
     )
-# Allowed admins
-admin = os.environ.get("JUPYTERHUB_ADMIN")
-if admin:
-    c.Authenticator.admin_users = [admin]
