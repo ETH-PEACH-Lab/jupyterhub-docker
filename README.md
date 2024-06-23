@@ -9,9 +9,9 @@
 
 4. To use a specific docker image built in our github organization as a docker spawner image: docker pull ghcr.io/eth-peach-lab/{GITHUB_REPO}:{TAG/BRANCH}
 
-5. Adapt DOCKER_NOTEBOOK_IMAGE accordingly
+5. (Optional) Adapt DOCKER_NOTEBOOK_IMAGE accordingly
 
-6. (Optional) add your username to the [project_config.yml](./project_config.yaml) and / or create new groups. Can also be done later.
+6. (Optional) add your username to the groups within [project_config.yml](./project_config.yaml) and / or create new groups. Can also be done later.
 
 ## Native Authenticator
 Works without any further configuration.
