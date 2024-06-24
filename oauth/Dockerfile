@@ -12,6 +12,8 @@ RUN mkdir /srv/oauthenticator
 WORKDIR /srv/oauthenticator
 ENV OAUTHENTICATOR_DIR /srv/oauthenticator
 ADD addusers.sh /srv/oauthenticator/addusers.sh
+ADD entrypoint.sh /entry/entrypoint.sh
+RUN chmod +x /entry/entrypoint.sh
 RUN chmod 700 /srv/oauthenticator
 
 ENTRYPOINT ["/entry/entrypoint.sh"]
