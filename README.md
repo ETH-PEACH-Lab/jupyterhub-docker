@@ -7,11 +7,13 @@
 
 3. Password is prompted: Copy and paste token
 
-4. To use a specific docker image built in our github organization as a docker spawner image: docker pull ghcr.io/eth-peach-lab/{GITHUB_REPO}:{TAG/BRANCH}
+4. To use a specific docker image built in our github organization as a docker spawner image: docker pull ghcr.io/eth-peach-lab/{GITHUB_REPO}:{TAG/BRANCH}. e.g., pull the puzzleme extension image: `docker pull ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:main`
 
 5. (Optional) Adapt DOCKER_NOTEBOOK_IMAGE accordingly
 
 6. (Optional) add your username to the groups within [project_config.yml](./project_config.yaml) and / or create new groups. Can also be done later.
+
+7. Ensure `entrypoint.sh` and `oauth/addusers.sh` gets `-rwxr-xr-x` by running `chmod +x entrypoint.sh`
 
 ## Native Authenticator
 Works without any further configuration.
