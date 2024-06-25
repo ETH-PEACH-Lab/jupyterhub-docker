@@ -8,4 +8,6 @@ RUN python3 -m pip install --no-cache-dir \
     dockerspawner \
     jupyterhub-nativeauthenticator \
     pyyaml
+ADD entrypoint.sh /entry/entrypoint.sh
+RUN chmod +x /entry/entrypoint.sh
 ENTRYPOINT ["/entry/entrypoint.sh"]

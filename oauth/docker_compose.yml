@@ -12,8 +12,7 @@ services:
     restart: always
     image: jupyterhub-oauth
     container_name: jupyterhub-oauth
-    networks:
-      - jupyterhub-network
+    network_mode: 'default-isg'
     volumes:
       # The JupyterHub configuration file
       - "./jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py:ro"
@@ -23,8 +22,8 @@ services:
       - "./admins:/srv/oauthenticator/admins:ro"
       # Bind Docker volume on host for JupyterHub database and cookie secrets
       - "./data:/data"
-      - "../entrypoint.sh:/entry/entrypoint.sh:rw"
       - "../project_config.yaml:/project_config.yaml"
+      - "./testfiles:jupyterhub-testfiles:rw"
     ports:
       - "8000:8000"
     environment:
@@ -34,10 +33,11 @@ services:
       DOCKER_NOTEBOOK_IMAGE: ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:main
       # Notebook directory inside user image
       DOCKER_NOTEBOOK_DIR: /home/jovyan/work
-
+      VIRTUAL_HOST: 'hub.peachlab-cntr1.inf.ethz.ch'
+      VIRTUAL_PORT: '8000'
+      LETSENCRYPT_HOST: 'hub.peachlab-cntr1.inf.ethz.ch'
+      LETSENCRYPT_EMAIL: 'wangjun@ethz.ch'
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 volumes:
   jupyterhub-data:
-
-networks:
-  jupyterhub-network:
-    name: jupyterhub-network

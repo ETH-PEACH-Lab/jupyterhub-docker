@@ -5,6 +5,7 @@
 import os
 import yaml
 import sys
+import shutil 
 
 with open('/project_config.yaml', 'r') as file:
     project_config = yaml.safe_load(file)
@@ -14,6 +15,7 @@ c = get_config()  # noqa: F821
 c.JupyterHub.authenticator_class = LocalGitHubOAuthenticator
 c.LocalGitHubOAuthenticator.create_system_users = True
 c.JupyterHub.admin_users = admin = set()
+c.OAuthenticator.allow_all = True
 c.LocalGitHubOAuthenticator.open_signup = True
 c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
 
@@ -47,12 +49,14 @@ c.DockerSpawner.use_internal_ip = True
 c.DockerSpawner.network_name = network_name
 c.DockerSpawner.extra_host_config = {'network_mode': network_name}
 
-def pre_spawn_hook(spawner):
-    group_names = {group.name for group in spawner.user.groups}
-    if "collaborative" in group_names:
-        spawner.log.info(f"Enabling RTC for user {spawner.user.name}")
-        spawner.args.append("--LabApp.collaborative=True")
+notebook_dir = os.environ.get("DOCKER_NOTEBOOK_DIR", "/home/jovyan/work")
+c.DockerSpawner.notebook_dir = notebook_dir
 
+def pre_spawn_hook(spawner):
+    spawner.args.append("--LabApp.collaborative=True")
+    spawner.volumes['oauth_jupyterhub-testfiles'] = os.path.join(notebook_dir, 'testfiles')
+
+c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir}
 c.DockerSpawner.pre_spawn_hook = pre_spawn_hook
 c.Spawner.ip = '0.0.0.0'
 

@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  copier:
+    image: busybox
+    container_name: jupyterhub-testfiles-copier
+    volumes:
+      - jupyterhub-testfiles:/jupyterhub-testfiles
+    configs:
+      - testfiles
+    entrypoint: sh -c "rm -rf /jupyterhub-testfiles/* && cp -r /testfiles/* /jupyterhub-testfiles && chmod -R 755 /jupyterhub-testfiles"
+volumes:
+  jupyterhub-testfiles:
+configs:
+  testfiles:
+    file: ./testfiles

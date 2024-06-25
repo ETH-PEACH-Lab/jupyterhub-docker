@@ -16,7 +16,7 @@
 7. Ensure `entrypoint.sh` and `oauth/addusers.sh` gets `-rwxr-xr-x` by running `chmod +x entrypoint.sh`
 
 ## Native Authenticator
-Works without any further configuration.
+Deprecated. Works without any further configuration.
 
 
 ## OAuth Authenticator
@@ -31,6 +31,9 @@ OAUTH_CALLBACK_URL={URL}
 Locally the callback url is set to: http://localhost:8000/hub/oauth_callback
 3. Add your username to the "admins" file in [/oauth](./oauth/)
 
+### Copier
+The Copier container copies the [testfiles folder](./oauth/testfiles/) into a shared named docker volume. 
+Which is persistent but can occasionally be rewritten. 
 ## Reference:
 Adapted from: 
 https://github.com/jupyterhub/oauthenticator/blob/main/examples/full/
