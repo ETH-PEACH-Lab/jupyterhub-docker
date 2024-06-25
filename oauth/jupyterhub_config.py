@@ -7,7 +7,7 @@ import yaml
 import sys
 import shutil 
 
-with open('/project_config.yaml', 'r') as file:
+with open('/rooms_config.yaml', 'r') as file:
     project_config = yaml.safe_load(file)
 from oauthenticator.github import LocalGitHubOAuthenticator
 
@@ -16,7 +16,6 @@ c.JupyterHub.authenticator_class = LocalGitHubOAuthenticator
 c.LocalGitHubOAuthenticator.create_system_users = True
 c.JupyterHub.admin_users = admin = set()
 c.OAuthenticator.allow_all = True
-c.LocalGitHubOAuthenticator.open_signup = True
 c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
 
 join = os.path.join
@@ -87,31 +86,53 @@ c.JupyterHub.load_roles = []
 
 c.JupyterHub.load_groups = {
     "collaborative": [],
+    "instructors": [],
 }
-for project_name, project in project_config["projects"].items():
-    # get the members of the project
+for instructor_name in project_config["instructors"]:
+    print(instructor_name)
+    c.JupyterHub.load_groups["instructors"].append(instructor_name)
+
+for project_name, project in project_config["rooms"].items():
+    # get the members of the room
     members = project.get("members", [])
-    print(f"Adding project {project_name} with members {members}")
-    # add them to a group for the project
-    c.JupyterHub.load_groups[project_name] = members
-    # define a new user for the collaboration
-    collab_user = f"{project_name}-collab"
+    # create groups for the project
+    members_project_name = f"{project_name}-members"
+    instructors_project_name = f"{project_name}-instructors"
+    if members is None:
+        members = []
+
+    c.JupyterHub.load_groups[members_project_name] = members
+
+    # define a new user for the room
+    collab_user = f"{project_name}-room"
     # add the collab user to the 'collaborative' group
     # so we can identify it as a collab account
     c.JupyterHub.load_groups["collaborative"].append(collab_user)
 
-    # finally, grant members of the project collaboration group
+    # finally, grant members of the room
     # access to the collab user's server,
     # and the admin UI so they can start/stop the server
     c.JupyterHub.load_roles.append(
         {
-            "name": f"collab-access-{project_name}",
+            "name": f"collab-access-{instructors_project_name}",
             "scopes": [
                 f"access:servers!user={collab_user}",
                 f"admin:servers!user={collab_user}",
                 "admin-ui",
                 f"list:users!user={collab_user}",
             ],
-            "groups": [project_name],
+            "groups": ["instructors"],
+        }
+    )
+    c.JupyterHub.load_roles.append(
+        {
+            "name": f"collab-access-{members_project_name}",
+            "scopes": [
+                f"access:servers!user={collab_user}",
+                f"admin:servers!user={collab_user}",
+                "admin-ui",
+                f"list:users!user={collab_user}",
+            ],
+            "groups": [members_project_name],
         }
     )

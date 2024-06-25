@@ -22,8 +22,7 @@ services:
       - "./admins:/srv/oauthenticator/admins:ro"
       # Bind Docker volume on host for JupyterHub database and cookie secrets
       - "./data:/data"
-      - "../project_config.yaml:/project_config.yaml"
-      - "./testfiles:jupyterhub-testfiles:rw"
+      - "../rooms_config.yaml:/rooms_config.yaml"
     ports:
       - "8000:8000"
     environment:

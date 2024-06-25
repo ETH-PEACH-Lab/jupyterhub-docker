@@ -1,0 +1,12 @@
+# This file contains the configuration for the rooms
+# instructors: list of users that are allowed to access the rooms and have instructor rights
+# rooms: list of rooms
+# members: list of users that are allowed to access the room
+# Each room is defined by a name (on the server a "room-user" will be created with this name + the postfix '-room')
+# These can be configured later in the jupyerhub admin panel
+instructors:
+  - littleaprilfool
+  - pascallinder
+rooms:
+  collaborative-test:
+    members:
