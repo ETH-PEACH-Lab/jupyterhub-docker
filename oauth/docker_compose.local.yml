@@ -22,7 +22,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
       - "./admins:/srv/oauthenticator/admins:ro"
       # Bind Docker volume on host for JupyterHub database and cookie secrets
-      - "./data:/data"
+      - "jupyterhub-data:/data"
       - "../rooms_config.yaml:/rooms_config.yaml"
     ports:
       - "8000:8000"
@@ -33,7 +33,8 @@ services:
       DOCKER_NOTEBOOK_IMAGE: collab_learning_extension
       # Notebook directory inside user image
       DOCKER_NOTEBOOK_DIR: /home/jovyan/work
-
+volumes:
+  jupyterhub-data:
 networks:
   jupyterhub-network:
     name: jupyterhub-network
