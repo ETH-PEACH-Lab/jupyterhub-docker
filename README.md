@@ -7,7 +7,7 @@
 
 3. Password is prompted: Copy and paste token
 
-4. To use a specific docker image built in our github organization as a docker spawner image: docker pull ghcr.io/eth-peach-lab/{GITHUB_REPO}:{TAG/BRANCH}. e.g., pull the puzzleme extension image: `docker pull ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:main`
+4. To use a specific docker image built in our github organization as a docker spawner image: docker pull ghcr.io/eth-peach-lab/{GITHUB_REPO}:{TAG/BRANCH}. e.g., pull the puzzleme extension image: `docker pull ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:VERSION`
 
 5. (Optional) Adapt DOCKER_NOTEBOOK_IMAGE accordingly
 
@@ -18,7 +18,7 @@
 ## Native Authenticator
 Deprecated. Works without any further configuration.
 
-
+ 
 ## OAuth Authenticator
 1. Create a new OAuth Application (Github: https://github.com/settings/applications/new)  
 For a local setup:  

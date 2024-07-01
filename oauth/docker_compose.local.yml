@@ -30,7 +30,10 @@ services:
       # All containers will join this network
       DOCKER_NETWORK_NAME: jupyterhub-network
       # JupyterHub will spawn this Notebook image for users
-      DOCKER_NOTEBOOK_IMAGE: collab_learning_extension
+      # for local
+      # DOCKER_NOTEBOOK_IMAGE: collab_learning_extension
+      # for remote
+      DOCKER_NOTEBOOK_IMAGE: ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:v0.2.1
       # Notebook directory inside user image
       DOCKER_NOTEBOOK_DIR: /home/jovyan/work
 volumes:
