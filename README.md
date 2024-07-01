@@ -13,12 +13,6 @@
 
 6. (Optional) add your username to the groups within [project_config.yml](./project_config.yaml) and / or create new groups. Can also be done later.
 
-7. Ensure `entrypoint.sh` and `oauth/addusers.sh` gets `-rwxr-xr-x` by running `chmod +x entrypoint.sh`
-
-## Native Authenticator
-Deprecated. Works without any further configuration.
-
- 
 ## OAuth Authenticator
 1. Create a new OAuth Application (Github: https://github.com/settings/applications/new)  
 For a local setup:  
@@ -31,9 +25,22 @@ OAUTH_CALLBACK_URL={URL}
 Locally the callback url is set to: http://localhost:8000/hub/oauth_callback
 3. Add your username to the "admins" file in [/oauth](./oauth/)
 
-### Copier
+## Run JupyterHub
+1. (Optional - Step 4 takes care) Build ./Dockerfile by executing: ```docker build --pull --rm  -t jupyterhub-oauth ./oauth```
+2. (Optional) Execute the copier ```docker compose -f "./oauth/docker_compose.copier.yml" up -d --build```
+3. Make sure the Image: DOCKER_NOTEBOOK_IMAGE is available.
+4. Run the fitting docker-compose for jupyter-hub:
+    - local: ```docker compose -f "./oauth/docker_compose.local.yml" up -d --build```
+    - ETH server: ```docker compose -f "./oauth/docker_compose.yml" up -d --build```
+
+### Copier / testfiles
 The Copier container copies the [testfiles folder](./oauth/testfiles/) into a shared named docker volume. 
-Which is persistent but can occasionally be rewritten. 
+This volume is then mounted into each users' working directory. Within this
+folder users can only edit existing files but not create or delete any documents / directories.
+
+
+
+
 ## Reference:
 Adapted from: 
 https://github.com/jupyterhub/oauthenticator/blob/main/examples/full/

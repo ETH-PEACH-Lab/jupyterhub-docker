@@ -33,7 +33,7 @@ services:
       # for local
       # DOCKER_NOTEBOOK_IMAGE: collab_learning_extension
       # for remote
-      DOCKER_NOTEBOOK_IMAGE: ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:v0.2.1
+      DOCKER_NOTEBOOK_IMAGE: ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:latest
       # Notebook directory inside user image
       DOCKER_NOTEBOOK_DIR: /home/jovyan/work
 volumes:
