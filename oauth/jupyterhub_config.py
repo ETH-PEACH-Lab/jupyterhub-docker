@@ -9,6 +9,8 @@ import shutil
 
 with open('/rooms_config.yaml', 'r') as file:
     project_config = yaml.safe_load(file)
+with open('/allowed_images.yaml', 'r') as file:
+    allowed_images = yaml.safe_load(file)
 from oauthenticator.github import LocalGitHubOAuthenticator
 
 c = get_config()  # noqa: F821
@@ -40,7 +42,7 @@ c.NotebookApp.server_extensions = [
     'extension'
 ]
 # Spawn containers from this image
-c.DockerSpawner.image = os.environ["DOCKER_NOTEBOOK_IMAGE"]
+c.DockerSpawner.allowed_images = allowed_images
 c.DockerSpawner.cmd = None
 # Connect containers to this Docker network
 network_name = os.environ["DOCKER_NETWORK_NAME"]

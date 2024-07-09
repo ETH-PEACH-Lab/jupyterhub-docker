@@ -1,0 +1,10 @@
+# JupyterHub will spawn this Notebook image for users
+# this is a dict of allowed images
+# the key is the name of the image, which will be shown in the spawn options
+# the value is the image to be spawned
+# if only one image is defined, the user will not be able to choose the image
+
+# for local
+# collab_learning_extension: collab_learning_extension
+# for remote
+collab-learning-extension: ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:latest
