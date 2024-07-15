@@ -54,7 +54,6 @@ notebook_dir = os.environ.get("DOCKER_NOTEBOOK_DIR", "/home/jovyan/work")
 c.DockerSpawner.notebook_dir = notebook_dir
 
 def pre_spawn_hook(spawner):
-    spawner.args.append("--LabApp.collaborative=True")
     spawner.volumes['oauth_jupyterhub-testfiles'] = os.path.join(notebook_dir, 'testfiles')
 
 c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir}
