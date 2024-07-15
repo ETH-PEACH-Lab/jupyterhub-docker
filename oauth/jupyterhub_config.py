@@ -43,7 +43,8 @@ c.NotebookApp.server_extensions = [
 ]
 # Spawn containers from this image
 c.DockerSpawner.allowed_images = allowed_images
-c.DockerSpawner.cmd = None
+c.DockerSpawner.image = allowed_images[list(allowed_images.keys())[0]]
+
 # Connect containers to this Docker network
 network_name = os.environ["DOCKER_NETWORK_NAME"]
 c.DockerSpawner.use_internal_ip = True
@@ -62,6 +63,7 @@ c.Spawner.ip = '0.0.0.0'
 
 c.DockerSpawner.ip = c.Spawner.ip
 c.Spawner.environment.update({"JUPYTERHUB_SINGLEUSER_APP": "jupyter-server"})
+
 c.DockerSpawner.environment = c.Spawner.environment
 c.Spawner.env_keep = [
     'JUPYTER_CONFIG_DIR'
