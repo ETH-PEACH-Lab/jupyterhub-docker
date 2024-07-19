@@ -9,3 +9,4 @@
 # for remote
 collab-learning-extension: ghcr.io/eth-peach-lab/collaborative-learning-extension-jupyter:latest
 visual-peer-learning: ghcr.io/eth-peach-lab/visual-peertesting/first_image:latest
+competilearn: ghcr.io/eth-peach-lab/competilearn/competilearn-jupyter-base:latest
